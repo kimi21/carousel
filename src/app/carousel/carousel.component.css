@@ -1,0 +1,88 @@
+
+.carousel-inner {
+  display:flex;
+  flex-direction: row;
+  flex-flow: wrap;
+}
+
+img {
+  width: 100%;
+  height :100%;
+}
+
+.row > .column{
+  padding: 0 8px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 200px;
+  height: 200px;
+}
+
+.main-container {
+  background-color: white;
+  padding-top: 3em; 
+  padding-bottom: 3em;
+}
+
+
+/* width needs to be 210*5 + 10*4 for padding*/
+.container {
+    overflow: hidden;
+    width : 1120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+  
+  .slider {
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* overflow-x: scroll; */
+    flex: 1 1 500px;
+    list-style: none;
+    padding: 0;
+    margin: 0 10px;
+  }
+  
+  .item {
+    flex: 0 0 210px;
+    height: 215px;
+    margin: 0px 10px 10px 0px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    }
+    
+    .current-slide.item {
+        height: 230px;
+        margin-top: -5px;
+    }
+
+    .btn{
+        margin-top: 1em;
+        margin-right: 1em;
+        font-size: 1em;
+        color: white;
+        background-color: blueviolet;
+        width: 100px;
+    }
+
+    a {
+      flex: 1;
+    }
+  
+    .moveLeft {
+       transform: translate(-220px, 0px);
+    }
+

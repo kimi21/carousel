@@ -1,0 +1,20 @@
+
+<div class="main-container">
+  <div class="container">
+    <div class="slider">
+      <li class="item" *ngFor = "let image of images; let ind = index;" >
+        <img src="{{image.largeImageURL}}"   />
+        <span style="position: absolute; top : 10px; left: 10px; font-size:2em; color: white;"> {{ind + 1}}</span>
+        <h2>{{image.likes}}</h2>
+      </li>
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <button mat-raised-button color="primary" class="btn" (click)="prev()">Previous</button>
+    <button mat-raised-button color="primary" class="btn" (click)="next()">Next</button>  
+ </div>
+</div>
+
+  
+
