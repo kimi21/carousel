@@ -1,88 +1,267 @@
-
-.carousel-inner {
-  display:flex;
-  flex-direction: row;
-  flex-flow: wrap;
-}
-
-img {
-  width: 100%;
-  height :100%;
-}
-
-.row > .column{
-  padding: 0 8px;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.column {
-  float: left;
-  width: 200px;
-  height: 200px;
-}
-
 .main-container {
-  background-color: white;
-  padding-top: 3em; 
-  padding-bottom: 3em;
+  background-color: white; 
 }
 
-
-/* width needs to be 210*5 + 10*4 for padding*/
 .container {
-    overflow: hidden;
-    width : 1120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 0 auto;
-  }
+  overflow: hidden;
+  width : 100%;;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.slider {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin-left:0;
+}
   
-  .slider {
-    display: flex;
-    /* flex-wrap: wrap; */
-    /* overflow-x: scroll; */
-    flex: 1 1 500px;
-    list-style: none;
-    padding: 0;
-    margin: 0 10px;
-  }
-  
-  .item {
-    flex: 0 0 210px;
-    height: 215px;
-    margin: 0px 10px 10px 0px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+  /* Smartphones ----------- */
+  @media only screen and (min-width : 320px) {
+    /* 
+      Display one image on screen at any given time 
+    */
+
+    .slider {
+      height: 80%;
+    }
+
+    .item {
+      flex: 0 0 100%; 
+      height: 100%;    
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+      
+    img {
+      width: 100%;
+      height :100%;
+      border-radius: 4px;
+    }
+
+    .buttonDiv {
+      display: none;
+    }
+
+    .arrowDiv {
+      display:block;
     }
     
-    .current-slide.item {
-        height: 230px;
-        margin-top: -5px;
+    .arrowPrev {
+      background-color:white;
+      opacity: 0.6;
+      width: 40px;
+      /* border-radius: 50%; */
+      position: absolute;
+      z-index: 999;
+      top: 56%;
     }
 
-    .btn{
-        margin-top: 1em;
-        margin-right: 1em;
-        font-size: 1em;
-        color: white;
-        background-color: blueviolet;
-        width: 100px;
+    .arrowNext {
+      background-color:white;
+      opacity: 0.6;
+      width: 40px;
+      /* border-radius: 50%; */
+      position: absolute;
+      z-index: 999;
+      top: 56%;
+      right: 0;
     }
+  }
+ 
 
-    a {
-      flex: 1;
-    }
+    
+  @media only screen and (min-width : 812px) {
+    /* 
+      Show 3 images on screen at any given time
+    */
+
+    /* 
+      Between 3 images there are 2 margin rights each with a value of 4%, 
+      hence for 2 margins : 2 * 2 = 4
+      In order to have even width of each 'item' element containing an image,
+      we need to subtract the space of margin from total width like so :
+      100% - 4% = 96%
+      Now divide this width by 3(total number of images 
+      on screen at any given time) like so :
+      96/3 = 32
+    */
+
+    .item {
+      flex: 0 0 32%; 
+      height: 16em;    
+      margin-right: 2%;  
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      }
+      
+      img {
+        width: 100%;
+        height :100%;
+        border-radius: 4px;
+      }
+      
+      .current-slide.item {
+          height: 230px;
+          margin-top: -5px;
+      }
   
-    .moveLeft {
-       transform: translate(-220px, 0px);
-    }
+      .buttonDiv {
+        display: block;
+      }
+  
+      .arrowDiv {
+        display: none;
+      }
+      
+      .btn{
+          margin-top: 1em;
+          margin-right: 1em;
+          font-size: 1em;
+          color: white;
+          background-color: blueviolet;
+          width: 100px;
+      }
+      .disabledColor {
+        background-color: grey;
+        color:black;
+      }
 
+  }
+    
+  @media only screen and (min-width : 920px) {
+          
+    /* 
+      Show 4 images on screen at any given time
+    */
+
+    /* 
+      Between 4 images there are 3 margin rights each with a value of 1%, 
+      hence for 4 margins : 4 * 1 = 4
+      In order to have even width of each 'item' element containing an image,
+      we need to subtract the space of margin from total width like so :
+      100% - 4% = 96%
+      Now divide this width by 4(total number of images 
+      on screen at any given time) like so :
+      96/4 = 24
+    */
+
+      .slider {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin-left:0;
+      }
+      
+      .item {
+        flex: 0 0 24%; /* 19.2%*/
+        height: 14em;  
+        margin-right: 1%;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        }
+        
+        img {
+          width: 100%;
+          height :100%;
+          border-radius: 4px;
+        }
+        
+        .current-slide.item {
+            height: 230px;
+            margin-top: -5px;
+        }
+
+        .buttonDiv {
+          display: block;
+        }
+    
+        .btn{
+            margin-top: 1em;
+            margin-right: 1em;
+            font-size: 1em;
+            color: white;
+            background-color: blueviolet;
+            width: 100px;
+        }
+
+        .disabledColor {
+          background-color: grey;
+          color:black;
+        }
+
+        .arrowDiv {
+          display: none;
+        }
+    
+    }
+    
+
+  /* Desktops and laptops ----------- */
+  @media only screen  and (min-width : 1200px) {
+
+  /* 
+    Styles.
+    Show 5 images in the carousel at any given time
+  */
+    
+  /* 
+    flex : 0 0 19.2% -- Why?
+    >> Between the 5 images there are 4 Margin-rights with a value of 1.25%; for 4 margins : 1.25 * 4 = 5
+    To calculate each item's width containing an image we need to subtract these margins from the width
+    => 100 - 5 = 95%;
+    Now divide this width among the 5 images like so :
+    95/5 = 19
+
+  */
+    .item {
+      flex: 0 0 19%; 
+      height: 12em;    
+      margin-right: 1.25%;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      }
+      
+      img {
+        width: 100%;
+        height :100%;
+        border-radius: 4px;
+      }
+      
+      .current-slide.item {
+          height: 230px;
+          margin-top: -5px;
+      }
+
+      .buttonDiv {
+        display: block;
+      }
+  
+      .btn{
+          margin-top: 1em;
+          margin-right: 1em;
+          font-size: 1em;
+          color: white;
+          background-color: blueviolet;
+          width: 100px;
+      }
+      .disabledColor {
+        background-color: grey;
+        color:black;
+      }
+  
+  }
+  
+  
+  

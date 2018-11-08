@@ -25,13 +25,12 @@ export class CarouselComponent implements OnInit {
   items;
   sliderVisibleWidth;
   totalItemsWidth;
+  itemWidth;
   maxXOffset;
   minXOffset;
   imageLoad;
-  b;
   container;
-  xLeft = 0;
-  xRight = 0;
+  pointer = 0;
   right;
   left ;
   disablePrev : boolean = false;
@@ -40,9 +39,8 @@ export class CarouselComponent implements OnInit {
   constructor(private getService: GetImagesService) {}
 
   ngOnInit() {
-  
-    //get images from our service
-    this.getService.getImages().subscribe((data) => {
+      //get images from our service
+      this.getService.getImages().subscribe((data) => {
       this.tempData  = data;
       this.images = this.tempData.hits;
       const _component = this;
@@ -65,18 +63,20 @@ export class CarouselComponent implements OnInit {
     this.carousel(document.querySelector('.container'));
   }
 
-  readyFn() {
-    this.carousel(this.container);
-    // const nodeList = this.container.querySelectorAll('.item');
 
-    console.log('Offset : ', this.slider.offsetWidth); // the visible area of the slider by measuring its width
-    console.log('Item: ', this.items[0]);
+
+  readyFn() {
+    
+    this.carousel(this.container);
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    console.log('Viewport width : ', w);
 
     this.sliderVisibleWidth = this.slider.offsetWidth;
-    this.totalItemsWidth = this.getTotalItemsWidth(this.items);
-    this.maxXOffset = 0;
-    this.minXOffset = - (this.totalItemsWidth - this.sliderVisibleWidth);
+    console.log('Slider visible width : ', this.slider.offsetWidth); // the visible area of the slider by measuring its width
+   
   }
+
+
 
   /*
       Carousel function initializes our slider and items variables that contain our images
@@ -84,67 +84,109 @@ export class CarouselComponent implements OnInit {
   carousel(container) {
     this.slider = document.querySelector('.slider');
     this.items = document.querySelectorAll('.item');  
-    console.log('Items: ', this.items);
+    
+    const left = this.slider.getBoundingClientRect().left;
+    const right = this.slider.getBoundingClientRect().right;
+    console.log('Items in carousel: ', this.items);
+    console.log('Slider Right : ', right);
   }
    
+
+
   getTotalItemsWidth(items) {
+
     const left = items[0].getBoundingClientRect();
     const right = items[items.length - 1].getBoundingClientRect();
     return right - left;
   }
 
-  prev() {
-    this.xRight = this.xRight + 220;
 
+
+  getItemWidth () {
+    /*
+      Subtract the left property of first and second items .
+      This includes the margin in between too which we want to include.
+    */
+    this.itemWidth = this.items[1].getBoundingClientRect().left - this.items[0].getBoundingClientRect().left;
+  }
+
+
+
+  xMinMaxOffsets() {
+
+    this.totalItemsWidth = this.getTotalItemsWidth(this.items);
+    console.log('totalItemsWidth : ', this.totalItemsWidth);
+
+    this.minXOffset = 0;
+    this.maxXOffset = - (this.totalItemsWidth - this.sliderVisibleWidth);
+    console.log('minXOffset : ', this.maxXOffset);
+  }
+
+
+
+  prev() {    
     //check if you have are at the first image
-    if(Math.abs(this.checkLeftOffset()) === 82.5 ) {
-      //stop going Previous
+    if(this.atFirstImage()) {
       console.log("Stop going PREVIOUS");
       this.disablePrev = true;
 
     } else { 
       //continue going previous
+      //Get acces to an item's width by calling the following function:
+      this.getItemWidth();
+      this.pointer += this.itemWidth;
+
       this.items.forEach((element) => {
-        element.style.transform = "translate(" + this.xRight + "px, 0px)";
-        // element.setAttribute("transform", "translate(" + this.x + "px, 0px)");
+        element.style.transform = "translate(" + this.pointer + "px, 0px)";
       });
       this.disablePrev = false;
+      this.disableNext = false;
     };
-    console.log("PRev xRight : ", this.xRight);
+
+    console.log("Prev Left pointer : ", this.pointer);
   }
 
+
+  
   next() {
-    this.xRight -= 220;
-
-    //check if you have reched the last image
-    console.log("Right offset : " , this.checkRigthOffset());
-
-    if(Math.abs(this.checkRigthOffset()) === 1182.5 ){
+   
+    //check if you have reached the last image
+    if(this.atLastImage()){
       //stop going next
       console.log("Stop going NEXT");
       this.disableNext = true;
 
     } else { 
+
       //continue going next
+      //Get acces to an item's width by calling the following function:
+      this.getItemWidth();
+      this.pointer -= this.itemWidth;
+    
       this.items.forEach(element => {
-        element.style.transform = "translate(" + this.xRight + "px, 0px)";
+        element.style.transform = "translate(" + this.pointer + "px, 0px)";
       });
       this.disableNext = false;
+      this.disablePrev = false;
     }
-    console.log("Next xRight : " , this.xRight);
+    console.log("Next xRight : " , this.pointer);
   }
 
-  checkRigthOffset() {
-    this.right = this.items[this.items.length - 1].getBoundingClientRect().x;
-    return this.right;
+
+
+  atLastImage() {
+    //check the last item's right against the slider's right
+    console.log("this.slider.getBoundingClientRect().right : " , this.slider.getBoundingClientRect().right);
+    console.log("LAst items right : ", this.items[this.items.length - 2].getBoundingClientRect().right);
+    return Math.round(this.slider.getBoundingClientRect().right) == Math.round(this.items[this.items.length - 1].getBoundingClientRect().right);
+  }
+ 
+
+
+  atFirstImage() {
+    //check first item's left against the slider's left to see if they coincide
+    return this.slider.getBoundingClientRect().left == this.items[0].getBoundingClientRect().left;
   }
 
-  checkLeftOffset() {
-    this.left = this.items[0].getBoundingClientRect().x;
-    return this.left;
-  }
-
-  
-  
   
 }
